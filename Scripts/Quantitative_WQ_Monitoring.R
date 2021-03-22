@@ -124,8 +124,15 @@ Map_WQ_basemap(WQ_extent = lake_extent,
                points_style = "quantile",
                histogram = TRUE)
 
-#Save results as csv file
-write.csv(waterquality_data, file = "Milford_Quantitative/Milford_GeoWQ_Data.csv")
+#Clean and Save Data
+#Remove Geometry (Causes Problems)
+waterquality_data <- subset(waterquality_data, select = -geometry)
+
+# Remove two points with no data
+waterquality_data <- waterquality_data[3:32,]
+
+#Export Data
+write.csv(waterquality_data, "Milford_Quantitative/Milford_GeoWQ_Data.csv")
 
 #### Creating Statistical Models -----------------------------------------------
 
@@ -136,10 +143,6 @@ write.csv(waterquality_data, file = "Milford_Quantitative/Milford_GeoWQ_Data.csv
 
 # Import Data 
 waterquality_data <- read.csv("Milford_Quantitative/Milford_GeoWQ_Data.csv")
-View(waterquality_data)
-
-# Remove two points with no data
-waterquality_data <- waterquality_data[3:32,]
 View(waterquality_data)
 
 #### Basic Linear Model
@@ -165,13 +168,13 @@ extract_lm_cv(parameter = "Chlorophyll_ugL", algorithm = "MM12NDCI",
 waterquality_data$PC <- sample(30, size = nrow(waterquality_data), replace = TRUE)
 
 # Define Algorithms
-algorithms <- c(names(waterquality_data[4:10]))
+algorithms <- c("Al10SABI","Am092Bsub", "Be16FLHviolet", "Gi033BDA")
 
 #Define Parameters
-parameters <- c(names(waterquality_data[,c(2,11)]))
+parameters <- c("Chlorophyll_ugL", "PC")
 
 # Run Model
-extract_lm_cv_multi_all <- extract_lm_cv_multi(parameters = parameters, algorithms = algorithms,
+extract_lm_cv_multi_results <- extract_lm_cv_multi(parameters = parameters, algorithms = algorithms,
                                                    df = waterquality_data, train_method = "lm", control_method = "repeatedcv",
                                                    folds = 3, nrepeats = 5)
 

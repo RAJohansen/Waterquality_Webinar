@@ -24,13 +24,10 @@ library(rgdal)
 library(caret)
 
 #install.packages("sen2r")
-#install.packages(c("leafpm", "mapedit", "shiny", "shinyFiles", "shinydashboard", "shinyjs", "shinyWidgets",'geojsonlint'))
 library(sen2r)
+#install.packages(c("leafpm", "mapedit", "shiny", "shinyFiles", "shinydashboard", "shinyjs", "shinyWidgets",'geojsonlint'))
 
 #### Use Sen2R for data acquisition and Pre-processing -------------------------
-
-#Load Sen2R package
-library(sen2r)
 
 #Check D
 check_sen2r_deps()
