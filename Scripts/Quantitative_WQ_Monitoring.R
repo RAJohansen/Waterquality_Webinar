@@ -143,6 +143,7 @@ write.csv(waterquality_data, "Milford_Quantitative/Milford_GeoWQ_Data.csv")
 
 # Import Data 
 waterquality_data <- read.csv("Milford_Quantitative/Milford_GeoWQ_Data.csv")
+waterquality_data$Am092Bsub <- as.numeric(waterquality_data$Am092Bsub)
 View(waterquality_data)
 
 #### Basic Linear Model
@@ -155,32 +156,27 @@ extract_lm_cv(parameter = "Chlorophyll_ugL", algorithm = "MM12NDCI",
               folds = 3, nrepeats = 5)
 
 #### Linear Model with Cross-Validation for multiple algorithms and parameters
-# extract_lm_cv_multi()
+# extract_lm_cv_all()
 - `parameters` list of water quality parameters
-- `algorithms` list of water quality algorithms
 - `df` data frame containing the values for parameter and algorithm arguments
 - `train_method` A string specifying which classification or regression model to use (Default = "lm"). See ?caret::train for more details
 - `control_method` A string specifying the resampling method (Default = "repeatedcv"). See ?caret::trainControl for more details
 - `folds` the number of folds to be used in the cross validation model (Default = 3)
 - `nrepeats` the number of iterations to be used in the cross validation model (Default = 5)
 
-# Create PC Fake data 
-waterquality_data$PC <- sample(30, size = nrow(waterquality_data), replace = TRUE)
-
-# Define Algorithms
-algorithms <- c("Al10SABI","Am092Bsub", "Be16FLHviolet", "Gi033BDA")
-
 #Define Parameters
-parameters <- c("Chlorophyll_ugL", "PC")
+parameter <- c("Chlorophyll_ugL")
 
 # Run Model
-extract_lm_cv_multi_results <- extract_lm_cv_multi(parameters = parameters, algorithms = algorithms,
-                                                   df = waterquality_data, train_method = "lm", control_method = "repeatedcv",
-                                                   folds = 3, nrepeats = 5)
-
+extract_lm_cv_all_results <- extract_lm_cv_all(parameters = parameter,
+                                                 df = waterquality_data,
+                                                 train_method = "lm",
+                                                 control_method = "repeatedcv",
+                                                 folds = 3,
+                                                 nrepeats = 5)
 
 #Show Results
-head(extract_lm_cv_multi_results)
+View(extract_lm_cv_all_results)
 
 
 
