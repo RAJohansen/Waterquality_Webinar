@@ -187,6 +187,7 @@ Map_WQ_raster(WQ_raster = MM12NDCI,
 
 #### Basemap with points  
 ```{r,fig.height = 5, fig.width = 6, eval=FALSE}
+#install.packages('OpenStreetMaps')
 Map_WQ_basemap(WQ_extent = lake_extent,
               sample_points = samples,
               WQ_parameter = "Chl_ugL",
@@ -212,7 +213,6 @@ Additionally, these function result in standardized outputs with the following:
 
 #### Sample Code for Staging your data
 **MAKE SURE YOU DATA IS PROJECTED CORRECTLY!**
-
 ```{r, eval = FALSE}
 #Input raster image
 wq_raster <- stack("C:/temp/my_raster.tif")
@@ -289,7 +289,9 @@ extract_lm_cv_multi2 <- function(parameters, algorithms, df, train_method = "lm"
 }
 
 algorithms <- c(names(df[6:10]))
+algorithms
 parameters <- c(names(df[3:5]))
+parameters
 extract_lm_cv_multi_results <- extract_lm_cv_multi2(parameters = parameters, algorithms = algorithms,
                                                    df = df, train_method = "lm", control_method = "repeatedcv",
                                                    folds = 3, nrepeats = 5)
